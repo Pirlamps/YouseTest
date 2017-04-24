@@ -27,7 +27,7 @@ import br.com.pirlamps.yousetest.foundation.model.RedditRequest;
 
 import static android.content.ContentValues.TAG;
 
-/**
+/*
  * Created by root-matheus on 23/04/17.
  */
 
@@ -59,7 +59,7 @@ public class MainActivity extends Activity implements MainContract.View, JoatRec
         //Inicializando componentes para lista
         mLayoutManager = new LinearLayoutManager(this);
         SpacesItemDecoration space = new SpacesItemDecoration(20);
-        mAdapter = new JoatRecyclerAdapter(R.layout.row_main);
+        mAdapter = new JoatRecyclerAdapter(R.layout.teste);
         mAdapter.setmDelegate(this);
         mScrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
             @Override
@@ -86,7 +86,8 @@ public class MainActivity extends Activity implements MainContract.View, JoatRec
 
         Log.i(TAG, "showPullRequests: assembling JoatList for adapter");
         for (Child item: redditRequest.getData().getChildren() ) {
-            dataSource.add(new JoatObject(BR.redditPost, item));
+
+            dataSource.add(new JoatObject(BR.teste, item));
         }
 
         mAdapter.addData(mTotalItensCount,dataSource);
