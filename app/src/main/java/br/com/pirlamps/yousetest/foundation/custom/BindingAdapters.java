@@ -28,45 +28,23 @@ public class BindingAdapters {
         Log.i(TAG, "loadImage: preparing to load image with url: "+imageUrl);
         Picasso.with(view.getContext())
                 .load(imageUrl)
-                .placeholder(R.drawable.ic_user_placeholder)
+                .placeholder(R.mipmap.ic_launcher)
                 .into(view);
     }
 
+    @BindingAdapter({"bind:showFormattedDate"})
+    public static void showDate(TextView view, Long longDate){
 
-    @BindingAdapter({"bind:showData"})
-    public static void formatDate(TextView view, String stringDate) {
-
-        Log.i(TAG, "formatDate: preparing to handle dateString: "+stringDate);
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        Date date = new Date(longDate * 1000);
         SimpleDateFormat newFormat = new SimpleDateFormat("dd/MM/yyyy");
         newFormat.setTimeZone(TimeZone.getTimeZone("GMT-03:00"));
-        try {
-            Date dateFromString = formatter.parse(stringDate);
-            String finalString = newFormat.format(dateFromString);
-            Log.i(TAG, "formatDate: success on parsing dateString");
-            view.setText(finalString);
-        } catch (ParseException e) {
-            Log.e(TAG, "formatDate: error on parsing dateString",e);
-            e.printStackTrace();
-        }
 
-
+        String finalString = newFormat.format(date);
+        view.setText(finalString);
     }
 
-    @BindingAdapter({"bind:setBody"})
-    public static void bodyCheck(TextView view, String body) {
-
-        Log.i(TAG, "bodyCheck: preparing to check if body is empty");
-        if(body == null || body.isEmpty()){
-            Log.i(TAG, "bodyCheck: body is empty, seting default body as description");
-          view.setText(R.string.no_body_text);
-        }else{
-            Log.i(TAG, "bodyCheck: body not empty, seting body as description");
-          view.setText(body);
-        }
 
 
-    }
 
 
 }

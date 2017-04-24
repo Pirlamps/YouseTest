@@ -44,6 +44,10 @@ public class JoatRecyclerAdapter extends RecyclerView.Adapter {
         return  type.cast(((JoatObject) getItem(position)).getBindingObject());
     }
 
+    public <T>T getLastItem(Class<T> type){
+        return  type.cast(((JoatObject) getItem(mDataSource.size()-1)).getBindingObject());
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 

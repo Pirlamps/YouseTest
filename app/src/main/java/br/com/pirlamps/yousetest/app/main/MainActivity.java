@@ -1,12 +1,17 @@
 package br.com.pirlamps.yousetest.app.main;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.customtabs.CustomTabsIntent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import com.android.databinding.library.baseAdapters.BR;
 
@@ -16,6 +21,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import br.com.pirlamps.yousetest.R;
+import br.com.pirlamps.yousetest.app.detail.DetailActivity;
 import br.com.pirlamps.yousetest.databinding.ActivityMainBinding;
 import br.com.pirlamps.yousetest.foundation.application.YouseApplication;
 import br.com.pirlamps.yousetest.foundation.custom.EndlessRecyclerViewScrollListener;
@@ -42,7 +48,6 @@ public class MainActivity extends Activity implements MainContract.View, JoatRec
     private EndlessRecyclerViewScrollListener mScrollListener;
     private int mTotalItensCount;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,12 +64,17 @@ public class MainActivity extends Activity implements MainContract.View, JoatRec
         //Inicializando componentes para lista
         mLayoutManager = new LinearLayoutManager(this);
         SpacesItemDecoration space = new SpacesItemDecoration(20);
-        mAdapter = new JoatRecyclerAdapter(R.layout.teste);
+        mAdapter = new JoatRecyclerAdapter(R.layout.row_main);
         mAdapter.setmDelegate(this);
         mScrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-//                mPresenter.loadAfter();
+                System.out.println("pagina "+page);
+                    mTotalItensCount = totalItemsCount;
+                    Child lastItem = mAdapter.getLastItem(Child.class);
+                    mPresenter.loadAfter(lastItem.getData().getName());
+
+
             }
         };
 
@@ -87,7 +97,7 @@ public class MainActivity extends Activity implements MainContract.View, JoatRec
         Log.i(TAG, "showPullRequests: assembling JoatList for adapter");
         for (Child item: redditRequest.getData().getChildren() ) {
 
-            dataSource.add(new JoatObject(BR.teste, item));
+            dataSource.add(new JoatObject(BR.redditPost, item));
         }
 
         mAdapter.addData(mTotalItensCount,dataSource);
@@ -96,15 +106,37 @@ public class MainActivity extends Activity implements MainContract.View, JoatRec
     @Override
     public void showError(String message) {
 
+        Log.i(TAG, "showError: preparing to  show error snackbar");
+        Snackbar snackbar = Snackbar
+                .make(mBinding.getRoot(), R.string.snack_message, Snackbar.LENGTH_INDEFINITE);
+
+        snackbar.setAction(R.string.snack_action_reload, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Child lastItem = mAdapter.getLastItem(Child.class);
+                mPresenter.loadAfter(lastItem.getData().getName());
+            }
+        });
+        snackbar.show();
     }
 
     @Override
     public void showComplete() {
-
     }
 
     @Override
     public void didTouchItem(int position) {
+        Log.i(TAG, "didTouchItem: at position"+position);
+        Child child = mAdapter.getItemWithType(position, Child.class);
+
+        String url = child.getData().getUrl();
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        builder.setToolbarColor(getResources().getColor(R.color.colorPrimaryDark));
+        builder.setStartAnimations(this, R.anim.slide_in_right, R.anim.slide_out_left);
+        builder.setExitAnimations(this, R.anim.slide_in_left, R.anim.slide_out_right);
+
+        CustomTabsIntent customTabsIntent = builder.build();
+        customTabsIntent.launchUrl(this, Uri.parse(url));
 
     }
 }

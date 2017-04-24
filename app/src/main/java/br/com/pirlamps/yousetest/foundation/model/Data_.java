@@ -142,7 +142,7 @@ public class Data_ implements Serializable
     private Boolean stickied;
     @SerializedName("created")
     @Expose
-    private Integer created;
+    private Long created;
     @SerializedName("url")
     @Expose
     private String url;
@@ -530,11 +530,11 @@ public class Data_ implements Serializable
         this.stickied = stickied;
     }
 
-    public Integer getCreated() {
+    public Long getCreated() {
         return created;
     }
 
-    public void setCreated(Integer created) {
+    public void setCreated(Long created) {
         this.created = created;
     }
 

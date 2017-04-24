@@ -5,38 +5,6 @@
     android:layout_height="match_parent">
 
 
-    <RelativeLayout
-        android:id="@+id/outletEmptyLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-           android:src="@drawable/ic_empty" />
-
-        <TextView
-            android:id="@+id/textView8"
-            android:textSize="25sp"
-            android:padding="10dp"
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/imageView3"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="30dp"
-            android:textColor="@color/text_blue"
-            android:text="@string/empty_text" />
-    </RelativeLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/outletDetailList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 
 </LinearLayout>

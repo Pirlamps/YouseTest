@@ -1,10 +1,5 @@
 package br.com.pirlamps.yousetest.app.main;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.util.List;
-
 import javax.inject.Inject;
 
 import br.com.pirlamps.yousetest.foundation.api.RedditAPI;
